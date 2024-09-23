@@ -21,6 +21,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,7 +37,7 @@ import com.touristmap.viewModel.PlacesViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun FormScreen(navController: NavController, viewModel: PlacesViewModel) {
+fun FormScreen(navController: NavController, viewModel: PlacesViewModel, placeId: Int?) {
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -48,6 +49,22 @@ fun FormScreen(navController: NavController, viewModel: PlacesViewModel) {
     var accommodationCost by remember { mutableStateOf("") }
     var transportationCost by remember { mutableStateOf("") }
     var comments by remember { mutableStateOf("") }
+
+    LaunchedEffect(placeId) {
+        placeId?.let {
+            val place = viewModel.getPlaceById(it)
+            if (place != null) {
+                name = place.name
+                visitOrder = place.visitOrder
+                imageUrl = place.imageUrl
+                latitude = place.latitude.toString()
+                longitude = place.longitude.toString()
+                accommodationCost = place.accommodationCost.toString()
+                transportationCost = place.transportationCost?.toString() ?: ""
+                comments = place.comments
+            }
+        }
+    }
 
 
     Scaffold(
@@ -109,22 +126,38 @@ fun FormScreen(navController: NavController, viewModel: PlacesViewModel) {
                 }
                 item {
                     Button(onClick = {
-                        viewModel.createPlace(
-                            Place(
-                                uid = 0,
-                                name = name,
-                                visitOrder = visitOrder,
-                                imageUrl = imageUrl,
-                                latitude = latitude.toDoubleOrNull() ?: 0.0,
-                                longitude = longitude.toDoubleOrNull() ?: 0.0,
-                                accommodationCost = accommodationCost.toDoubleOrNull() ?: 0.0,
-                                transportationCost = transportationCost.toDoubleOrNull(),
-                                comments = comments
+                        if (placeId != null) {
+                            viewModel.updatePlace(
+                                Place(
+                                    uid = placeId,
+                                    name = name,
+                                    visitOrder = visitOrder,
+                                    imageUrl = imageUrl,
+                                    latitude = latitude.toDoubleOrNull() ?: 0.0,
+                                    longitude = longitude.toDoubleOrNull() ?: 0.0,
+                                    accommodationCost = accommodationCost.toDoubleOrNull() ?: 0.0,
+                                    transportationCost = transportationCost.toDoubleOrNull(),
+                                    comments = comments
+                                )
                             )
-                        )
+                        } else {
+                            viewModel.createPlace(
+                                Place(
+                                    uid = 0,
+                                    name = name,
+                                    visitOrder = visitOrder,
+                                    imageUrl = imageUrl,
+                                    latitude = latitude.toDoubleOrNull() ?: 0.0,
+                                    longitude = longitude.toDoubleOrNull() ?: 0.0,
+                                    accommodationCost = accommodationCost.toDoubleOrNull() ?: 0.0,
+                                    transportationCost = transportationCost.toDoubleOrNull(),
+                                    comments = comments
+                                )
+                            )
+                        }
                         navController.navigate(Screen.HOME.route)
                     }) {
-                        Text("Add Place")
+                        Text(if (placeId != null) "Editar" else "Crear")
                     }
                 }
             }

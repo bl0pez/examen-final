@@ -11,9 +11,25 @@ import kotlinx.coroutines.launch
 class PlacesViewModel(private val placeDao: PlaceDao) : ViewModel() {
     val places: LiveData<List<Place>> = placeDao.findAll()
 
+    suspend fun getPlaceById(placeId: Int): Place? {
+        return placeDao.findPlaceById(placeId)
+    }
+
+    fun updatePlace(place: Place) {
+        viewModelScope.launch(Dispatchers.IO) {
+            placeDao.update(place)
+        }
+    }
+
     fun createPlace(place: Place) {
         viewModelScope.launch(Dispatchers.IO) {
             placeDao.create(place)
+        }
+    }
+
+    fun deletePlace(place: Place) {
+        viewModelScope.launch(Dispatchers.IO) {
+            placeDao.delete(place)
         }
     }
 }

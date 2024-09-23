@@ -19,13 +19,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.touristmap.database.Place
 
 @Composable
-fun PlaceItem(place: Place) {
+fun PlaceItem(place: Place, onEditClick: () -> Unit, onDeleteClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,17 +56,15 @@ fun PlaceItem(place: Place) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Default.Edit, contentDescription = "Accommodation Cost")
+                    IconButton(
+                        onClick = onEditClick,
+                    ) {
+                        Icon(Icons.Default.Edit, contentDescription = "Edit")
                     }
 
-                    IconButton(onClick = {}) {
-                        Icon(Icons.Default.Place, contentDescription = "Edit")
-                    }
-
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = onDeleteClick) {
                         Icon(Icons.Default.Delete, contentDescription = "Delete")
                     }
 
