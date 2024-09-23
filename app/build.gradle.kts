@@ -70,17 +70,22 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // LiveData con Compose, permite observar datos en la UI.
     implementation("androidx.compose.runtime:runtime-livedata:1.6.4")
-
-
+    // Implementación principal de Room para persistencia de datos en SQLite.
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
-
     // To use Kotlin annotation processing tool (kapt)
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:2.6.1")
-
+    // Bibliotecas para la navegación en aplicaciones de Compose.
     implementation("androidx.navigation:navigation-compose:2.5.2")
+    // Biblioteca para realizar llamadas a APIs HTTP de manera sencilla.
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    // Biblioteca para cargar y mostrar imágenes en Compose, optimizada para el rendimiento.
     implementation("io.coil-kt:coil-compose:2.4.0")
+    // Determina ubicación
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    //Open Street Map (osmdroid)
+    implementation("org.osmdroid:osmdroid-android:6.1.16")
 }

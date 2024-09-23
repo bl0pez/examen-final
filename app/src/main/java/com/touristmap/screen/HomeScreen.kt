@@ -71,8 +71,10 @@ fun HomeScreen(navController: NavController, viewModel: PlacesViewModel) {
                                   onDeleteClick = {
                                       showDialog = true
                                       placeToDelete = item
+                                  },
+                                  onDetailClick = {
+                                      navController.navigate("${Screen.DETAIL.route}/${item.uid}")
                                   }
-
                               )
                           }
                       }

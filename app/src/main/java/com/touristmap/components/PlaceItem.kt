@@ -26,7 +26,7 @@ import coil.compose.AsyncImage
 import com.touristmap.database.Place
 
 @Composable
-fun PlaceItem(place: Place, onEditClick: () -> Unit, onDeleteClick: () -> Unit) {
+fun PlaceItem(place: Place, onEditClick: () -> Unit, onDeleteClick: () -> Unit, onDetailClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,6 +58,13 @@ fun PlaceItem(place: Place, onEditClick: () -> Unit, onDeleteClick: () -> Unit) 
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
+
+                    IconButton(
+                        onClick = onDetailClick,
+                    ) {
+                        Icon(Icons.Default.Place, contentDescription = "Ir")
+                    }
+
                     IconButton(
                         onClick = onEditClick,
                     ) {
